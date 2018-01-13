@@ -188,7 +188,7 @@
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" title="Tippy" id="3tk-xW-LyZ">
-                        <barButtonItem key="rightBarButtonItem" enabled="NO" title="Settings" id="jfi-Ar-goA">
+                        <barButtonItem key="rightBarButtonItem" title="Settings" id="jfi-Ar-goA">
                             <connections>
                                 <segue destination="jjO-eb-npt" kind="push" id="1zS-dY-Jgs"/>
                             </connections>

@@ -67,6 +67,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     numOfDinersField.useUnderline()
     tipControl.layer.cornerRadius = 4
     billField.placeholder = "$"
+    
+    
   }
   
   override func didReceiveMemoryWarning() {
