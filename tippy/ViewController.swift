@@ -68,7 +68,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     tipControl.layer.cornerRadius = 4
     billField.placeholder = "$"
     
-    
+    settingsButton.tintColor(UIColor.black)
   }
   
   override func didReceiveMemoryWarning() {

@@ -200,7 +200,7 @@
                         <outlet property="nthCost" destination="Wfg-lK-yV6" id="Ipm-BE-96G"/>
                         <outlet property="nthSymbol" destination="7bt-UN-Dwv" id="OAr-nu-dPY"/>
                         <outlet property="numOfDinersField" destination="oi9-5E-EQC" id="HEv-Io-awK"/>
-                        <outlet property="settingsButton" destination="jfi-Ar-goA" id="U2B-Ny-Quu"/>
+                        <outlet property="settingsButton" destination="jfi-Ar-goA" id="XJh-bJ-qfC"/>
                         <outlet property="threeCost" destination="EF4-q3-5bZ" id="CgS-xF-mH3"/>
                         <outlet property="tipControl" destination="fnf-a1-7P6" id="QHR-Gw-WMv"/>
                         <outlet property="tipLabel" destination="z74-Hd-f03" id="Sue-0D-l3p"/>
