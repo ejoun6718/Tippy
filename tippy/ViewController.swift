@@ -9,26 +9,10 @@
 import UIKit
 
 extension Double {
-  
   // Truncates double to a certain number of decimal places
   func truncate(places : Int) -> Double
   {
-    return Double(floor(pow(10.0, Double(places)) * self)/pow(10.0, Double(places)))
-  }
-}
-
-extension UITextField {
-  
-  // Replaces textfield with underline
-  func useUnderline() {
-    let border = CALayer()
-    let borderWidth = CGFloat(1.0)
-    self.borderStyle = UITextBorderStyle.none
-    border.borderColor  = UIColor(red: 0.63, green: 0.96, blue: 1, alpha: 0.76).cgColor
-    border.frame = CGRect(origin: CGPoint(x: 0,y :self.frame.size.height - borderWidth), size: CGSize(width: self.frame.size.width, height: self.frame.size.height))
-    border.borderWidth = borderWidth
-    self.layer.addSublayer(border)
-    self.layer.masksToBounds = true
+    return Double(floor(pow(10.0, Double(places)) * self) / pow(10.0, Double(places)))
   }
 }
 
@@ -53,7 +37,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
     let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-    if(!launchedBefore) {
+    if !launchedBefore {
       setDefaultTips()
       print("First launch")
       UserDefaults.standard.set(true, forKey: "launchedBefore")
@@ -63,21 +47,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
     self.billField.delegate = self
     self.numOfDinersField.delegate = self
     
-    billField.borderStyle = UITextBorderStyle.none
-    numOfDinersField.useUnderline()
+    billField.borderStyle = .none
+    numOfDinersField.borderStyle = .none
     tipControl.layer.cornerRadius = 4
     billField.placeholder = "$"
   }
   
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
   }
   
   @IBAction func onTap(_ sender: Any) {
     view.endEditing(true)
   }
   
+  // MARK: - Calculates and displays the tip and total
   @IBAction func calculateTip(_ sender: Any) {
     let firstTip = defaults.integer(forKey: "firstTip")
     let secondTip = defaults.integer(forKey: "secondTip")
@@ -106,11 +90,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // Show split bill among the entered number of diners
     let savedNumOfDiners = defaults.integer(forKey: "numOfDiners")
-    if(savedNumOfDiners != 0) {
+    if savedNumOfDiners != 0 {
       numOfDinersField.text = String(savedNumOfDiners)
     }
     let numberOfDiners = Int(numOfDinersField.text!)
-    if(numberOfDiners ?? 0 > 0) {
+    if numberOfDiners ?? 0 > 0 {
       nthCost.isHidden = false
       nthSymbol.isHidden = false
       
@@ -128,7 +112,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     defaults.set(bill, forKey: "bill")
   }
   
-  /* Calculates and displays the cost of the split bill */
+  // MARK: - Calculates and displays the cost of the split bill
   func calculateSplitBill(total: Double, numberOfDiners: Int, label: UILabel) {
     var costPerDiner = total / Double(numberOfDiners)
     costPerDiner = costPerDiner.truncate(places: 2)
@@ -136,7 +120,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // Show the extra cents that need to be paid
     let remainder = total - (costPerDiner * Double(numberOfDiners))
-    if(!(remainder <= 0.009)) {
+    if !(remainder <= 0.009) {
       label.text = (label.text)! + String(format: " (+$%.2f)", remainder)
     }
   }
@@ -158,7 +142,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     // Retrieve saved bill
     let bill = defaults.double(forKey: "bill")
-    if(bill != 0) {
+    if bill != 0 {
       billField.text = String(bill)
     }
     
@@ -183,7 +167,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     print("view did disappear")
   }
   
-  /* Sets the default values for the tip percentages */
+  // MARK: - Sets the default values for the tip percentages
   func setDefaultTips() {
     let defaultFirstTip = 18
     let defaultSecondTip = 20
@@ -194,55 +178,55 @@ class ViewController: UIViewController, UITextFieldDelegate {
     defaults.set(defaultThirdTip, forKey: "thirdTip")
   }
   
-  /* Check that the user enters valid values */
-  func textField(_ textField: UITextField,shouldChangeCharactersIn range: NSRange,replacementString string: String) -> Bool
+  // MARK: - Check that the user enters valid values
+  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
   {
     let text = textField.text
     let isBackspace = strcmp(string, "\\b")
     
-    if(textField == numOfDinersField) {
+    if textField == numOfDinersField {
       // Limit entry to numbers only
-      if(string == ".") {
+      if string == "." {
         return false
       }
       // Prevent entering zero diners
-      if(text?.count ?? 0 == 0 && string == "0") {
+      if text?.count ?? 0 == 0 && string == "0" {
         return false
       }
       // Limit entry to 4 digits
-      if(text?.count ?? 0 == 4 && isBackspace != -92) {
+      if text?.count ?? 0 == 4 && isBackspace != -92 {
         return false
       }
     }
     else {
       // Limit entry to one dot
       let countdots = (textField.text?.components(separatedBy: (".")).count)! - 1
-      if (countdots > 0 && string == "."){
+      if countdots > 0 && string == "." {
         return false
       }
       
       // Limit entry to two decimal places
-      if(text?.count ?? 0 > 2) {
+      if text?.count ?? 0 > 2 {
         let dotFinder = text![text!.index(text!.endIndex, offsetBy: -3)]
-        if(isBackspace != -92 && dotFinder == ".") {
+        if isBackspace != -92 && dotFinder == "." {
           return false
         }
       }
       
       // Limit entry to the millions place
-      if(countdots == 0 && text?.count ?? 0 == 7) {
-        if(isBackspace != -92 && string != ".") {
+      if countdots == 0 && text?.count ?? 0 == 7 {
+        if isBackspace != -92 && string != "." {
           return false
         }
       }
       
       // Prevent leading zeroes
-      if(text == "0" && isBackspace != -92 && string != ".") {
+      if text == "0" && isBackspace != -92 && string != "." {
         textField.text = ""
       }
       
       // Automatically lead a 0 when "." is typed
-      if(text?.count ?? 0 == 0 && string == ".") {
+      if text?.count ?? 0 == 0 && string == "." {
         textField.text = "0"
       }
     }

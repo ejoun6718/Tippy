@@ -44,17 +44,17 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     defaults.set(tipControl.selectedSegmentIndex, forKey: "tipPercentagesIndex")
   }
   
-  /* Saves the new tip percentage value */
+  // MARK: - Saves the new tip percentage value
   @IBAction func tipReplace(_ sender: Any) {
     let newTip = Int(tipReplaceField.text!) ?? 0
     let index = tipControl.selectedSegmentIndex
-    if(index == 0) {
+    if index == 0 {
       defaults.set(newTip, forKey: "firstTip")
     }
-    if(index == 1) {
+    if index == 1 {
       defaults.set(newTip, forKey: "secondTip")
     }
-    if(index == 2) {
+    if index == 2 {
       defaults.set(newTip, forKey: "thirdTip")
     }
     tipControl.setTitle(String(format: "%d%%", newTip), forSegmentAt: index)
@@ -64,29 +64,29 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     tipReplaceField.text = ""
   }
   
-  /* Check that the user enters valid values */
+  // MARK: - Check that the user enters valid values
   func textField(_ textField: UITextField,shouldChangeCharactersIn range: NSRange,replacementString string: String) -> Bool
   {
     let text = textField.text
     let isBackspace = strcmp(string, "\\b")
     
     // Prevent decimal places
-    if(string == ".") {
+    if string == "." {
       return false
     }
     
     // Limit entry to 2 digits unless user is trying to type 100
-    if(text == "10") {
-      if(string != "0" && isBackspace != -92) {
+    if text == "10" {
+      if string != "0" && isBackspace != -92 {
         return false
       }
     }
-    else if(text?.count ?? 0 >= 2 && isBackspace != -92) {
+    else if text?.count ?? 0 >= 2 && isBackspace != -92 {
       return false
     }
     
     // Prevent leading zeroes
-    if(text == "0" && isBackspace != -92 && string != ".") {
+    if text == "0" && isBackspace != -92 && string != "." {
       textField.text = ""
     }
     return true
